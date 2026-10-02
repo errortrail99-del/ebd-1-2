@@ -17,8 +17,7 @@
  * @returns {string}
  */
 export function describeValue(value) {
-  // TODO: use typeof inside a template literal.
-  throw new Error("describeValue is not written yet");
+  return `${value} is a ${typeof value}`;
 }
 
 /**
@@ -31,7 +30,7 @@ export function describeValue(value) {
  */
 export function priceLabel(product, amount) {
   // TODO: two values in one template literal.
-  throw new Error("priceLabel is not written yet");
+  return `${product} costs ${amount} EGP`;
 }
 
 /**
@@ -45,7 +44,7 @@ export function priceLabel(product, amount) {
  */
 export function isExpensive(amount) {
   // TODO: return the comparison itself. You do not need an if statement.
-  throw new Error("isExpensive is not written yet");
+ return amount > 100;
 }
 
 /**
@@ -59,7 +58,10 @@ export function isExpensive(amount) {
  */
 export function shippingCost(orderTotal) {
   // TODO: use an if. Remember that return stops the function.
-  throw new Error("shippingCost is not written yet");
+ if (orderTotal > 500) {
+    return 0;
+  }
+  return 50;
 }
 
 /**
@@ -73,5 +75,11 @@ export function shippingCost(orderTotal) {
  */
 export function stockLabel(count) {
   // TODO: use if / else if / else. The order of the branches matters.
-  throw new Error("stockLabel is not written yet");
+   if (count === 0) {
+    return "Out of stock";
+  } else if (count < 10) {
+    return "Low stock";
+  } else {
+    return "In stock";
+  }
 }
