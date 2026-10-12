@@ -19,8 +19,9 @@ import { findProduct, findAllProducts } from "./fake-db.js";
  * @returns {Promise<string>} the product's name
  */
 export async function productName(id) {
-  // TODO: await findProduct(id), then return the name off what comes back.
-  throw new Error("productName is not written yet");
+  // Wait for the database to answer, then pull the name off the product.
+  const product = await findProduct(id);
+  return product.name;
 }
 
 /**
@@ -31,9 +32,9 @@ export async function productName(id) {
  * @returns {Promise<string>}
  */
 export async function priceLabel(id) {
-  // TODO: await the product, then build the string. Module 01's label, with
-  // the data arriving late.
-  throw new Error("priceLabel is not written yet");
+  // Same lookup, then a template literal (module 01) to build the label.
+  const product = await findProduct(id);
+  return `${product.name} costs ${product.price} EGP`;
 }
 
 /**
@@ -49,8 +50,14 @@ export async function priceLabel(id) {
  * @returns {Promise<string>}
  */
 export async function safeProductName(id) {
-  // TODO: wrap the await in try/catch, and return "Not found" from the catch.
-  throw new Error("safeProductName is not written yet");
+  // findProduct rejects for a missing id. The try/catch turns that rejection
+  // into a normal return value instead of letting it crash the caller.
+  try {
+    const product = await findProduct(id);
+    return product.name;
+  } catch (error) {
+    return "Not found";
+  }
 }
 
 /**
@@ -71,4 +78,11 @@ export async function safeProductName(id) {
  * Remember `export`, and remember `async`.
  */
 
-// TODO: write namesInStock here.
+export async function namesInStock() {
+  // Wait for the whole list; after that it is an ordinary array (module 04):
+  // keep the in-stock products, then keep only their names.
+  const products = await findAllProducts();
+  return products
+    .filter((product) => product.inStock)
+    .map((product) => product.name);
+}
