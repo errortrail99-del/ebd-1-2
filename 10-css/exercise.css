@@ -4,39 +4,58 @@
  * See your own page with:         npm run open 10 exercise
  * Check your work with:           npm test 10
  *
- * exercise.html is written for you and must not be edited. Every class and
- * element named below already exists in it.
- *
- * Write each rule where its TODO is, then delete the TODO comment. The exact
- * colours, sizes and fonts are yours to choose unless a TODO says otherwise —
- * make it look like something you would not be embarrassed by.
- *
- * Keep the page open in the browser and refresh after each change.
+ * exercise.html is written for you and must not be edited.
  */
 
-/* TODO: a rule for `body` that sets
- *       font-family, color, and background-color. */
+/* The whole page: one readable font, dark text on a warm off-white. */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1f2933;
+  background-color: #f7f5f0;
+  line-height: 1.6;
+}
 
-/* TODO: a rule for `.page` that sets
- *       max-width, and margin (use `0 auto` to centre it). */
+/* Keep lines a comfortable length and centre the column. */
+.page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
-/* TODO: a rule for `header` that sets
- *       display: flex;
- *       justify-content: space-between;
- *       align-items: center;
- *       and one more property of your choosing. */
+/* Flexbox puts the title on the left and the nav on the right. */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #0b6e4f;
+}
 
-/* TODO: a rule for `nav a` — a descendant selector, so it only affects links
- *       inside the nav — that sets
- *       color, and text-decoration. */
+/* Only the links inside the nav, not every link on the page. */
+nav a {
+  color: #0b6e4f;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 1rem;
+}
 
-/* TODO: a rule for `.card-list` that sets
- *       display: flex;
- *       gap (any size);
- *       flex-wrap: wrap; */
+/* The cards sit in a row and wrap onto a new line on narrow screens. */
+.card-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 
-/* TODO: a rule for `.card` that sets
- *       padding, border-radius, and background-color. */
+/* Each card: space inside, rounded corners, a white panel on the page. */
+.card {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e2ddd3;
+  flex: 1 1 12rem;
+}
 
-/* TODO: a rule for `.price` that sets
- *       color, and font-weight. */
+/* Prices stand out: bold, in the same green as the header line. */
+.price {
+  color: #0b6e4f;
+  font-weight: 700;
+}
