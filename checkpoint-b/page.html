@@ -1,0 +1,35 @@
+<!--
+  Checkpoint B — your page. Build it to checkpoint-b/spec.md.
+  Look at it with:  npm run open b
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Supplies</title>
+    <link rel="stylesheet" href="page.css" />
+  </head>
+  <body>
+    <main class="page">
+      <h1>Student Supplies</h1>
+
+      <button id="apply">Apply filter</button>
+
+      <!-- Left empty on purpose: page.js draws the items into it. -->
+      <ul id="list"></ul>
+    </main>
+
+    <!-- type="module" because page.js uses import. Last in the body, so
+         #list and #apply already exist when it runs. -->
+    <script type="module" src="page.js"></script>
+
+    <!-- page.js only defines the functions; this calls start() to set the
+         page up. Keeping the call here means loading page.js on its own
+         changes nothing, which is what the tests expect. -->
+    <script type="module">
+      import { start } from "./page.js";
+      start();
+    </script>
+  </body>
+</html>
