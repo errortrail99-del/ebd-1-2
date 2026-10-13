@@ -20,8 +20,8 @@
  * @returns {string}
  */
 export function pageHeading() {
-  // TODO: querySelector the h1, then read its textContent.
-  throw new Error("pageHeading is not written yet");
+  // The first (and only) h1 on the page, as text rather than as an element.
+  return document.querySelector("h1").textContent;
 }
 
 /**
@@ -31,8 +31,8 @@ export function pageHeading() {
  * @returns {number}
  */
 export function productCount() {
-  // TODO: querySelectorAll gives you all of them. It has a length.
-  throw new Error("productCount is not written yet");
+  // Every element with the class "card"; a NodeList still has a length.
+  return document.querySelectorAll(".card").length;
 }
 
 /**
@@ -44,8 +44,10 @@ export function productCount() {
  * @returns {string[]}
  */
 export function productNames() {
-  // TODO: querySelectorAll, Array.from, then map. A NodeList has no .map.
-  throw new Error("productNames is not written yet");
+  // A NodeList has no .map, so turn it into a real array first.
+  return Array.from(document.querySelectorAll(".card h3")).map(
+    (heading) => heading.textContent
+  );
 }
 
 /**
@@ -57,9 +59,17 @@ export function productNames() {
  * @returns {string|null}
  */
 export function priceOf(name) {
-  // TODO: find the card whose h3 matches, then read its .price.
-  // Remember to return null when nothing matches.
-  throw new Error("priceOf is not written yet");
+  // find gives back the first card whose h3 text matches, or undefined.
+  const card = Array.from(document.querySelectorAll(".card")).find(
+    (card) => card.querySelector("h3").textContent === name
+  );
+
+  // No such card: return null instead of crashing on undefined.
+  if (!card) {
+    return null;
+  }
+
+  return card.querySelector(".price").textContent;
 }
 
 /**
@@ -79,4 +89,10 @@ export function priceOf(name) {
  * Remember `export`.
  */
 
-// TODO: write soldOutNames here.
+export function soldOutNames() {
+  // One selector matches only the cards that ALSO have the sold-out class
+  // (no space between .card and .sold-out means "both on the same element").
+  return Array.from(document.querySelectorAll(".card.sold-out h3")).map(
+    (heading) => heading.textContent
+  );
+}
