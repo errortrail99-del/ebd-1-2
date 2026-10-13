@@ -13,6 +13,10 @@
 // The first three are started for you. The LAST one has no code — you write
 // it, and it is the one that ties the whole of Part 2 together.
 
+// The data lives here, in an ordinary array. The page is only a picture of it:
+// every change goes into this array first, then renderList redraws the page.
+const items = [];
+
 /**
  * Reads what is currently typed into the two boxes.
  *
@@ -24,9 +28,11 @@
  * @returns {{ name: string, price: number }}
  */
 export function readForm() {
-  // TODO: read .value off each input. Trim the name, and convert the price
-  // with Number().
-  throw new Error("readForm is not written yet");
+  // .value is always a string. Trim the name; Number() turns the price into
+  // a number (and an empty box, "", into 0).
+  const name = document.querySelector("#name").value.trim();
+  const price = Number(document.querySelector("#price").value);
+  return { name, price };
 }
 
 /**
@@ -35,8 +41,8 @@ export function readForm() {
  * @returns {void}
  */
 export function clearForm() {
-  // TODO: set each input's .value to an empty string.
-  throw new Error("clearForm is not written yet");
+  document.querySelector("#name").value = "";
+  document.querySelector("#price").value = "";
 }
 
 /**
@@ -52,9 +58,26 @@ export function clearForm() {
  * @returns {void}
  */
 export function renderList(items) {
-  // TODO: empty #list first, then build one card per item — the same card
-  // shape as module 12.
-  throw new Error("renderList is not written yet");
+  const list = document.querySelector("#list");
+
+  // Empty the list first, so calling this again REPLACES the cards.
+  list.textContent = "";
+
+  // Then one card per item: the same <li class="card"> shape as module 12.
+  for (const item of items) {
+    const card = document.createElement("li");
+    card.classList.add("card");
+
+    const heading = document.createElement("h3");
+    heading.textContent = item.name;
+
+    const priceText = document.createElement("p");
+    priceText.classList.add("price");
+    priceText.textContent = `${item.price} EGP`;
+
+    card.append(heading, priceText);
+    list.append(card);
+  }
 }
 
 /**
@@ -86,4 +109,35 @@ export function renderList(items) {
  * Remember `export`.
  */
 
-// TODO: write wireForm here.
+export function wireForm() {
+  const form = document.querySelector("#product-form");
+  const error = document.querySelector("#error");
+
+  form.addEventListener("submit", (event) => {
+    // 1. Stop the browser reloading the page and throwing our work away.
+    event.preventDefault();
+
+    // 2. Read what was typed.
+    const { name, price } = readForm();
+
+    // 3. An empty name (readForm already trimmed it, so "   " is "" here)
+    //    is falsy (module 05), so refuse it and stop.
+    if (!name) {
+      error.textContent = "Give the product a name.";
+      return;
+    }
+
+    // 4. The price must be a number above 0. An empty box gives 0, and
+    //    !(price > 0) is also true for NaN, so one check covers every case.
+    if (!(price > 0)) {
+      error.textContent = "Give the product a price.";
+      return;
+    }
+
+    // 5. All good: clear the error, update the data, redraw, empty the form.
+    error.textContent = "";
+    items.push({ name, price });
+    renderList(items);
+    clearForm();
+  });
+}
