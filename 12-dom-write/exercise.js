@@ -16,6 +16,23 @@
 // also fine. Either way, remember it can come back undefined.
 
 /**
+ * A small helper used by removeProduct and markSoldOut: the card whose <h3>
+ * text is exactly `name`, or undefined if there is none.
+ *
+ * #list is looked up every time rather than once at the top of the file, so
+ * it always points at the list that is on the page right now.
+ *
+ * @param {string} name
+ * @returns {Element|undefined}
+ */
+function findCard(name) {
+  const cards = document.querySelectorAll("#list .card");
+  return Array.from(cards).find(
+    (card) => card.querySelector("h3").textContent === name
+  );
+}
+
+/**
  * Adds one product card to the end of the list.
  *
  * The card must be an <li> with the class `card`, containing:
@@ -30,9 +47,21 @@
  * @returns {void}
  */
 export function addProduct(name, price) {
-  // TODO: createElement for each piece, fill them in, append them together,
-  // then append the card to #list. Nothing appears until that last step.
-  throw new Error("addProduct is not written yet");
+  // Build each piece in memory first. None of it is on the page yet.
+  const card = document.createElement("li");
+  card.classList.add("card");
+
+  const heading = document.createElement("h3");
+  heading.textContent = name;
+
+  const priceText = document.createElement("p");
+  priceText.classList.add("price");
+  priceText.textContent = `${price} EGP`;
+
+  // Put the pieces inside the card, then the card at the end of the list.
+  // Only this last append makes it appear.
+  card.append(heading, priceText);
+  document.querySelector("#list").append(card);
 }
 
 /**
@@ -43,8 +72,11 @@ export function addProduct(name, price) {
  * @returns {void}
  */
 export function removeProduct(name) {
-  // TODO: find the right card, then call .remove() on it.
-  throw new Error("removeProduct is not written yet");
+  const card = findCard(name);
+  // No such card: do nothing instead of crashing on undefined.
+  if (card) {
+    card.remove();
+  }
 }
 
 /**
@@ -55,8 +87,10 @@ export function removeProduct(name) {
  * @returns {void}
  */
 export function markSoldOut(name) {
-  // TODO: find the card, then classList.add.
-  throw new Error("markSoldOut is not written yet");
+  const card = findCard(name);
+  if (card) {
+    card.classList.add("sold-out");
+  }
 }
 
 /**
@@ -65,8 +99,10 @@ export function markSoldOut(name) {
  * @returns {void}
  */
 export function clearProducts() {
-  // TODO: loop over all the cards and remove each one.
-  throw new Error("clearProducts is not written yet");
+  // Remove every card but keep the <ul id="list"> itself on the page.
+  for (const card of document.querySelectorAll("#list .card")) {
+    card.remove();
+  }
 }
 
 /**
@@ -90,4 +126,14 @@ export function clearProducts() {
  * Remember `export`.
  */
 
-// TODO: write wireButtons here.
+export function wireButtons() {
+  // Hand the browser a function to call LATER, on each click. Nothing runs
+  // now; wiring the buttons adds no cards by itself.
+  document.querySelector("#add").addEventListener("click", () => {
+    addProduct("Notebook", 45);
+  });
+
+  document.querySelector("#reset").addEventListener("click", () => {
+    clearProducts();
+  });
+}
