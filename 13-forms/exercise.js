@@ -141,3 +141,9 @@ export function wireForm() {
     clearForm();
   });
 }
+
+// Wire the real page. Skipped under the tests (they run in Node, where
+// `process` exists), because the tests call wireForm() themselves.
+if (typeof process === "undefined") {
+  wireForm();
+}
